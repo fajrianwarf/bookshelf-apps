@@ -203,6 +203,29 @@ function fireEvent() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
+  const titleText = "Bookshelf Apps";
+  const titleElement = document.getElementById('animatedTitle');
+  let index = 0;
+  let delay = 100;
+  let stopDelay = 3000;
+
+  function typeWriter() {
+    if (index < titleText.length) {
+      titleElement.innerHTML = titleText.substring(0, index + 1);
+      index++;
+      setTimeout(typeWriter, delay);
+    } else {
+      setTimeout(() => {
+        index = 0;
+        titleElement.innerHTML = '';
+        typeWriter();
+      }, stopDelay);
+    }
+  }
+
+  typeWriter();
+
+
   const submitForm = document.getElementById('inputBook');
   submitForm.addEventListener('submit', function (e) {
     addBook(e);

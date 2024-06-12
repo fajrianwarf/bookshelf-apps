@@ -4,6 +4,15 @@
     box-sizing: border-box;
 }
 
+body {
+    margin: 0;
+    padding: 0;
+    background-image: url('./assets/bookshelf.jpg');
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+}
+
 body, input, button {
     font-family: 'Open Sans', sans-serif;
 }
@@ -19,6 +28,27 @@ input, button {
     justify-content: center;
     background-color: cornflowerblue;
     color: white;
+    position: relative;
+
+}
+
+.head_bar__title {
+    font-size: 2em;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 0.15em solid orange;
+    box-sizing: border-box;
+    margin: 0;
+    animation: blink-caret 1.5s step-end infinite;
+}
+
+@keyframes blink-caret {
+    from, to {
+      border-color: transparent;
+    }
+    50% {
+      border-color: orange;
+    }
 }
 
 main {
@@ -26,7 +56,10 @@ main {
     width: 80%;
     margin: 0 auto;
     padding: 16px;
+}
 
+section {
+    background-color: white;
 }
 
 .input_section {
