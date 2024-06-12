@@ -169,3 +169,7 @@ main {
     background-color: darkred;
     color: white;
 }
+
+.book_shelf > .book_list > .empty_list {
+    text-align: center;
+}

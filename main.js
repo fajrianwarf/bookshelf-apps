@@ -4,6 +4,16 @@ let books = localStorage.getItem(storageKey)
   ? JSON.parse(localStorage.getItem(storageKey))
   : [];
 
+function createEmptyCard() {
+  const bookCard = document.createElement('article');
+  bookCard.classList.add('empty_list');
+
+  const bookTitle = document.createElement('h3');
+  bookTitle.innerText = 'Tidak ada list buku';
+  bookCard.append(bookTitle);
+
+  return bookCard;
+}
 
 function createBookCard(book) {
   const { id, title, author, year, isComplete } = book;
@@ -119,15 +129,27 @@ function renderBooks(customBooks) {
     books = customBooks;
   }
 
+  let hasIncompleteBooks = false;
+  let hasCompleteBooks = false;
+
   for (const book of books) {
     const bookElement = createBookCard(book);
     if (!book.isComplete) {
       incompleteBookshelf.append(bookElement);
+      hasIncompleteBooks = true;
     } else {
       completeBookshelf.append(bookElement);
+      hasCompleteBooks = true;
     }
   }
 
+  if (!hasIncompleteBooks) {
+    incompleteBookshelf.append(createEmptyCard());
+  }
+
+  if (!hasCompleteBooks) {
+    completeBookshelf.append(createEmptyCard());
+  }
 }
 
 function fireEvent() {
