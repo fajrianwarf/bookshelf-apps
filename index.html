@@ -82,6 +82,7 @@
 <!--      </article>-->
     </div>
   </section>
+
   <div id="deleteModal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
@@ -90,6 +91,35 @@
         <button id="cancelDelete">Batal</button>
         <button id="confirmDelete">Hapus</button>
       </div>
+    </div>
+  </div>
+
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>Edit Buku</h2>
+      <form id="editBookForm">
+        <div class="input">
+          <label for="editBookTitle">Judul</label>
+          <input id="editBookTitle" type="text" required>
+        </div>
+        <div class="input">
+          <label for="editBookAuthor">Penulis</label>
+          <input id="editBookAuthor" type="text" required>
+        </div>
+        <div class="input">
+          <label for="editBookYear">Tahun</label>
+          <input id="editBookYear" type="number" required>
+        </div>
+        <div class="input_inline">
+          <label for="editBookIsComplete">Selesai dibaca</label>
+          <input id="editBookIsComplete" type="checkbox">
+        </div>
+        <div class="modal-buttons">
+          <button type="button" id="cancelEdit">Batal</button>
+          <button type="submit" id="confirmEdit">Simpan</button>
+        </div>
+      </form>
     </div>
   </div>
 </main>

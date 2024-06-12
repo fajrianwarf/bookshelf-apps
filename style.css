@@ -187,17 +187,18 @@ main {
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
     background-color: rgba(0,0,0,0.4);
+    justify-content: center;
+    align-items: center;
 }
 
 .modal-content {
     background-color: #fff;
-    margin: 15% auto;
+    margin: 0;
     padding: 20px;
     border: 1px solid #888;
     width: 80%;
-    max-width: 300px;
+    max-width: 400px;
     border-radius: 8px;
 }
 
@@ -230,5 +231,60 @@ main {
 
 .modal-buttons > button#confirmDelete {
     background-color: red;
+    color: white;
+}
+
+.modal-content {
+    background-color: #fff;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 300px;
+    border-radius: 8px;
+}
+
+.modal-content h2 {
+    margin-top: 0;
+    font-size: 1.5em;
+    text-align: center;
+}
+  
+.modal-content form {
+    display: flex;
+    flex-direction: column;
+}
+  
+.modal-content .input {
+    margin-bottom: 10px;
+}
+  
+.modal-content .input label {
+    margin-bottom: 5px;
+    font-weight: bold;
+    display: block;
+}
+  
+.modal-content .input input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+  
+.modal-content .input_inline {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+  
+.modal-content .input_inline label {
+    margin-right: 10px;
+}
+  
+.modal-buttons > button#confirmEdit {
+    background-color: darkgreen;
     color: white;
 }

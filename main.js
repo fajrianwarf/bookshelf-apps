@@ -4,6 +4,7 @@ let books = localStorage.getItem(storageKey)
   ? JSON.parse(localStorage.getItem(storageKey))
   : [];
 let bookIdToDelete = null;
+let bookIdToEdit = null;
 
 function createEmptyCard() {
   const bookCard = document.createElement('article');
@@ -69,10 +70,25 @@ function createBookCard(book) {
   btnRemoveBook.innerHTML = '<i class="fas fa-trash"></i> Hapus buku';
   btnRemoveBook.addEventListener('click', function () {
     bookIdToDelete = id;
-    document.getElementById('deleteModal').style.display = 'block';
+    document.getElementById('deleteModal').style.display = 'flex';
   });
 
+  const btnEditBook = document.createElement('button');
+  btnEditBook.classList.add('blue');
+  btnEditBook.innerHTML = '<i class="fas fa-edit"></i> Edit buku';
+  btnEditBook.addEventListener('click', function () {
+    bookIdToEdit = id;
+    const book = books.find(book => book.id === id);
+    document.getElementById('editBookTitle').value = book.title;
+    document.getElementById('editBookAuthor').value = book.author;
+    document.getElementById('editBookYear').value = book.year;
+    document.getElementById('editBookIsComplete').checked = book.isComplete;
+    document.getElementById('editModal').style.display = 'flex';
+  });
+
+
   actionButtons.append(btnRemoveBook);
+  actionButtons.append(btnEditBook);
   bookCard.append(actionButtons);
 
   return bookCard;
@@ -106,6 +122,30 @@ function addBook(e) {
   }
 
   fireEvent();
+}
+
+function editBook(e) {
+  e.preventDefault();
+
+  const title = document.querySelector('#editBookTitle').value;
+  const author = document.querySelector('#editBookAuthor').value;
+  const year = document.querySelector('#editBookYear').value;
+  const isComplete = document.querySelector('#editBookIsComplete').checked;
+
+  const bookIndex = books.findIndex(book => book.id === bookIdToEdit);
+  if (bookIndex !== -1) {
+    books[bookIndex] = {
+      ...books[bookIndex],
+      title,
+      author,
+      year: Number(year),
+      isComplete,
+    };
+    localStorage.setItem(storageKey, JSON.stringify(books));
+    fireEvent();
+  }
+
+  document.getElementById('editModal').style.display = 'none';
 }
 
 function removeBook(id) {
@@ -201,6 +241,27 @@ document.addEventListener('DOMContentLoaded', function () {
   window.addEventListener('click', function (event) {
     if (event.target == deleteModal) {
       deleteModal.style.display = 'none';
+    }
+  });
+
+  const editModal = document.getElementById('editModal');
+  const editBookForm = document.getElementById('editBookForm');
+  const cancelEditButton = document.getElementById('cancelEdit');
+  const closeEditModal = document.getElementsByClassName('close')[1];
+
+  editBookForm.addEventListener('submit', editBook);
+
+  cancelEditButton.addEventListener('click', function () {
+    editModal.style.display = 'none';
+  });
+
+  closeEditModal.addEventListener('click', function () {
+    editModal.style.display = 'none';
+  });
+
+  window.addEventListener('click', function (event) {
+    if (event.target == editModal) {
+      editModal.style.display = 'none';
     }
   });
 
