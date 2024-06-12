@@ -3,6 +3,7 @@ const renderEvent = 'RENDER_BOOKS';
 let books = localStorage.getItem(storageKey)
   ? JSON.parse(localStorage.getItem(storageKey))
   : [];
+let bookIdToDelete = null;
 
 function createEmptyCard() {
   const bookCard = document.createElement('article');
@@ -67,9 +68,8 @@ function createBookCard(book) {
   btnRemoveBook.classList.add('red');
   btnRemoveBook.innerHTML = '<i class="fas fa-trash"></i> Hapus buku';
   btnRemoveBook.addEventListener('click', function () {
-    const filteredBooks = books.filter(book => book.id !== id);
-    localStorage.setItem(storageKey, JSON.stringify(filteredBooks));
-    fireEvent();
+    bookIdToDelete = id;
+    document.getElementById('deleteModal').style.display = 'block';
   });
 
   actionButtons.append(btnRemoveBook);
@@ -105,6 +105,12 @@ function addBook(e) {
     books = [newData];
   }
 
+  fireEvent();
+}
+
+function removeBook(id) {
+  books = books.filter(book => book.id !== id);
+  localStorage.setItem(storageKey, JSON.stringify(books));
   fireEvent();
 }
 
@@ -171,6 +177,31 @@ document.addEventListener('DOMContentLoaded', function () {
       book.title.toLowerCase().includes(keyword)
     );
     renderBooks(filteredBooks);
+  });
+
+  const deleteModal = document.getElementById('deleteModal');
+  const confirmDeleteButton = document.getElementById('confirmDelete');
+  const cancelDeleteButton = document.getElementById('cancelDelete');
+  const closeModal = document.getElementsByClassName('close')[0];
+
+  confirmDeleteButton.addEventListener('click', function () {
+    removeBook(bookIdToDelete);
+    bookIdToDelete = null;
+    deleteModal.style.display = 'none';
+  });
+
+  cancelDeleteButton.addEventListener('click', function () {
+    deleteModal.style.display = 'none';
+  });
+
+  closeModal.addEventListener('click', function () {
+    deleteModal.style.display = 'none';
+  });
+
+  window.addEventListener('click', function (event) {
+    if (event.target == deleteModal) {
+      deleteModal.style.display = 'none';
+    }
   });
 
   fireEvent();
