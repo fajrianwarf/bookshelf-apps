@@ -166,9 +166,11 @@ document.addEventListener('DOMContentLoaded', function () {
   searchForm.addEventListener('submit', function (e) {
     e.preventDefault();
 
-    const keyword = document.getElementById('searchBookTitle').value;
-    const books = searchedBooks(keyword);
-    renderBooks(books);
+    const keyword = document.getElementById('searchBookTitle').value.toLowerCase();
+    const filteredBooks = books.filter((book) =>
+      book.title.toLowerCase().includes(keyword)
+    );
+    renderBooks(filteredBooks);
   });
 
   fireEvent();
