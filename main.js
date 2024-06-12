@@ -40,7 +40,7 @@ function createBookCard(book) {
   const copiedBooks = books;
 
   if (!isComplete) {
-    isFinishedButton.innerText = 'Finished Reading';
+    isFinishedButton.innerHTML = '<i class="fas fa-check"></i> Tandai selesai dibaca';
     isFinishedButton.classList.add('green');
     isFinishedButton.addEventListener('click', function () {
       copiedBooks.forEach(book => {
@@ -50,8 +50,8 @@ function createBookCard(book) {
       fireEvent();
     });
   } else {
-    isFinishedButton.innerText = 'Unfinished Reading';
-    isFinishedButton.classList.add('red');
+    isFinishedButton.innerHTML = '<i class="fas fa-refresh"></i> Baca ulang';
+    isFinishedButton.classList.add('yellow');
     isFinishedButton.addEventListener('click', function () {
       copiedBooks.forEach(book => {
         if (book.id === id) return book.isComplete = false;
@@ -65,7 +65,7 @@ function createBookCard(book) {
 
   const btnRemoveBook = document.createElement('button');
   btnRemoveBook.classList.add('red');
-  btnRemoveBook.innerText = 'Remove Book';
+  btnRemoveBook.innerHTML = '<i class="fas fa-trash"></i> Hapus buku';
   btnRemoveBook.addEventListener('click', function () {
     const filteredBooks = books.filter(book => book.id !== id);
     localStorage.setItem(storageKey, JSON.stringify(filteredBooks));
