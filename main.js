@@ -10,9 +10,12 @@ function createEmptyCard() {
   const bookCard = document.createElement('article');
   bookCard.classList.add('empty_list');
 
-  const bookTitle = document.createElement('h3');
-  bookTitle.innerText = 'Tidak ada list buku';
-  bookCard.append(bookTitle);
+  const emptyImage = document.createElement('img');
+  emptyImage.src = './assets/empty.png';
+  emptyImage.alt = 'No books available';
+  emptyImage.classList.add('empty_image');
+
+  bookCard.append(emptyImage);
 
   return bookCard;
 }
@@ -22,16 +25,21 @@ function createBookCard(book) {
 
   const bookCard = document.createElement('article');
   bookCard.classList.add('book_item');
+  bookCard.setAttribute('data-bookid', id);
+  bookCard.setAttribute('data-testid', 'bookItem');
 
   const bookTitle = document.createElement('h3');
+  bookTitle.setAttribute('data-testid', 'bookItemTitle');
   bookTitle.innerText = title;
   bookCard.append(bookTitle);
 
   const bookAuthor = document.createElement('p');
+  bookAuthor.setAttribute('data-testid', 'bookItemAuthor');
   bookAuthor.innerText = author;
   bookCard.append(bookAuthor);
 
   const bookYear = document.createElement('p');
+  bookYear.setAttribute('data-testid', 'bookItemYear');
   bookYear.innerText = year;
   bookCard.append(bookYear);
 
@@ -42,22 +50,24 @@ function createBookCard(book) {
   const copiedBooks = books;
 
   if (!isComplete) {
-    isFinishedButton.innerHTML = '<i class="fas fa-check"></i> Tandai selesai dibaca';
-    isFinishedButton.classList.add('green');
+    isFinishedButton.innerHTML = '✅ Tandai selesai dibaca';
+    isFinishedButton.classList.add('to_complete');
+    isFinishedButton.setAttribute('data-testid', 'bookItemIsCompleteButton');
     isFinishedButton.addEventListener('click', function () {
-      copiedBooks.forEach(book => {
-        if (book.id === id) return book.isComplete = true;
-      })
+      copiedBooks.forEach((book) => {
+        if (book.id === id) return (book.isComplete = true);
+      });
       localStorage.setItem(storageKey, JSON.stringify(copiedBooks));
       fireEvent();
     });
   } else {
-    isFinishedButton.innerHTML = '<i class="fas fa-refresh"></i> Baca ulang';
-    isFinishedButton.classList.add('yellow');
+    isFinishedButton.innerHTML = '📖 Baca ulang';
+    isFinishedButton.setAttribute('data-testid', 'bookItemIsCompleteButton');
+    isFinishedButton.classList.add('re_read');
     isFinishedButton.addEventListener('click', function () {
-      copiedBooks.forEach(book => {
-        if (book.id === id) return book.isComplete = false;
-      })
+      copiedBooks.forEach((book) => {
+        if (book.id === id) return (book.isComplete = false);
+      });
       localStorage.setItem(storageKey, JSON.stringify(copiedBooks));
       fireEvent();
     });
@@ -66,19 +76,20 @@ function createBookCard(book) {
   actionButtons.append(isFinishedButton);
 
   const btnRemoveBook = document.createElement('button');
-  btnRemoveBook.classList.add('red');
-  btnRemoveBook.innerHTML = '<i class="fas fa-trash"></i> Hapus buku';
+  btnRemoveBook.classList.add('delete');
+  btnRemoveBook.setAttribute('data-testid', 'bookItemDeleteButton');
+  btnRemoveBook.innerHTML = '🗑️ Hapus buku';
   btnRemoveBook.addEventListener('click', function () {
     bookIdToDelete = id;
     document.getElementById('deleteModal').style.display = 'flex';
   });
 
   const btnEditBook = document.createElement('button');
-  btnEditBook.classList.add('blue');
-  btnEditBook.innerHTML = '<i class="fas fa-edit"></i> Edit buku';
+  btnRemoveBook.setAttribute('data-testid', 'bookItemEditButton');
+  btnEditBook.innerHTML = '✏️ Edit buku';
   btnEditBook.addEventListener('click', function () {
     bookIdToEdit = id;
-    const book = books.find(book => book.id === id);
+    const book = books.find((book) => book.id === id);
     document.getElementById('editBookTitle').value = book.title;
     document.getElementById('editBookAuthor').value = book.author;
     document.getElementById('editBookYear').value = book.year;
@@ -86,9 +97,8 @@ function createBookCard(book) {
     document.getElementById('editModal').style.display = 'flex';
   });
 
-
-  actionButtons.append(btnRemoveBook);
   actionButtons.append(btnEditBook);
+  actionButtons.append(btnRemoveBook);
   bookCard.append(actionButtons);
 
   return bookCard;
@@ -97,10 +107,10 @@ function createBookCard(book) {
 function addBook(e) {
   e.preventDefault();
 
-  const title = document.querySelector('#inputBookTitle').value;
-  const author = document.querySelector('#inputBookAuthor').value;
-  const year = document.querySelector('#inputBookYear').value;
-  const isComplete = document.querySelector('#inputBookIsComplete').checked;
+  const title = document.querySelector('#bookFormTitle').value;
+  const author = document.querySelector('#bookFormAuthor').value;
+  const year = document.querySelector('#bookFormYear').value;
+  const isComplete = document.querySelector('#bookFormIsComplete').checked;
 
   const newData = {
     id: +new Date(),
@@ -132,7 +142,7 @@ function editBook(e) {
   const year = document.querySelector('#editBookYear').value;
   const isComplete = document.querySelector('#editBookIsComplete').checked;
 
-  const bookIndex = books.findIndex(book => book.id === bookIdToEdit);
+  const bookIndex = books.findIndex((book) => book.id === bookIdToEdit);
   if (bookIndex !== -1) {
     books[bookIndex] = {
       ...books[bookIndex],
@@ -149,7 +159,7 @@ function editBook(e) {
 }
 
 function removeBook(id) {
-  books = books.filter(book => book.id !== id);
+  books = books.filter((book) => book.id !== id);
   localStorage.setItem(storageKey, JSON.stringify(books));
   fireEvent();
 }
@@ -159,10 +169,8 @@ function searchedBooks(searchKey) {
 }
 
 function renderBooks(customBooks) {
-  const incompleteBookshelf = document.querySelector(
-    '#incompleteBookshelfList'
-  );
-  const completeBookshelf = document.querySelector('#completeBookshelfList');
+  const incompleteBookshelf = document.querySelector('#incompleteBookList');
+  const completeBookshelf = document.querySelector('#completeBookList');
   incompleteBookshelf.innerHTML = '';
   completeBookshelf.innerHTML = '';
 
@@ -203,7 +211,7 @@ function fireEvent() {
 }
 
 document.addEventListener('DOMContentLoaded', function () {
-  const titleText = "Bookshelf Apps";
+  const titleText = 'Bookshelf Apps';
   const titleElement = document.getElementById('animatedTitle');
   let index = 0;
   let delay = 100;
@@ -225,8 +233,18 @@ document.addEventListener('DOMContentLoaded', function () {
 
   typeWriter();
 
+  const checkbox = document.getElementById('bookFormIsComplete');
+  const buttonText = document.querySelector('#bookFormSubmit span');
 
-  const submitForm = document.getElementById('inputBook');
+  checkbox.addEventListener('change', () => {
+    if (checkbox.checked) {
+      buttonText.textContent = 'Sudah Selesai Dibaca 📘';
+    } else {
+      buttonText.textContent = 'Selesai Dibaca 📖';
+    }
+  });
+
+  const submitForm = document.getElementById('bookForm');
   submitForm.addEventListener('submit', function (e) {
     addBook(e);
   });
@@ -235,7 +253,9 @@ document.addEventListener('DOMContentLoaded', function () {
   searchForm.addEventListener('submit', function (e) {
     e.preventDefault();
 
-    const keyword = document.getElementById('searchBookTitle').value.toLowerCase();
+    const keyword = document
+      .getElementById('searchBookTitle')
+      .value.toLowerCase();
     const filteredBooks = books.filter((book) =>
       book.title.toLowerCase().includes(keyword)
     );
