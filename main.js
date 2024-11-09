@@ -85,7 +85,7 @@ function createBookCard(book) {
   });
 
   const btnEditBook = document.createElement('button');
-  btnRemoveBook.setAttribute('data-testid', 'bookItemEditButton');
+  btnEditBook.setAttribute('data-testid', 'bookItemEditButton');
   btnEditBook.innerHTML = '✏️ Edit buku';
   btnEditBook.addEventListener('click', function () {
     bookIdToEdit = id;
